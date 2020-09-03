@@ -1,0 +1,125 @@
+import sys
+from math import sin,cos,tan,radians
+import pygame
+from pygame.locals import QUIT,Rect,KEYDOWN,K_LEFT,K_RIGHT,K_UP,K_DOWN
+import random
+red=(255,0,0)
+white=(255,255,255)
+pygame.init()
+pygame.key.set_repeat(5,5)
+sf=pygame.display.set_mode((800,600))
+fc=pygame.time.Clock()
+
+class dice:
+    def __init__(self, a,b):
+        self.x=a; self.y=b;
+        pygame.draw.lines(sf,red,True,[(a,b),(a+100,b),(a+100,b+100),(a,b+100)])
+        self.pos = [(a+25,b+25),(a+25,b+50),(a+25,b+75),(a+50,b+50),(a+75,b+25),(a+75,b+50),(a+75,b+75)]
+        self.t = [(3,990),(0,6),(0,3,6),(0,2,4,6),(0,2,3,4,6),(0,1,2,4,5,6)]
+        self.number=0
+        
+    def dice1(self,a):
+        for i in a:
+            if i<800:
+                pygame.draw.circle(sf,red,self.pos[i],5)    
+    def roll (self):
+        
+        a=self.x
+        b=self.y
+        pygame.draw.lines(sf,red,True,[(a,b),(a+100,b),(a+100,b+100),(a,b+100)])
+        self.number=random.randint(1,6)
+        self.dice1(self.t[self.number-1])
+        
+    
+
+def press():
+    a=0
+    while a<30:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                a+=1
+                
+        
+        
+        
+                
+
+
+        
+def ert (a,b):
+    sysf = pygame.font.SysFont(None,60)
+    mess =  sysf.render(a,True,(255,0,0))
+    mr = mess.get_rect()
+    mr.topleft=b
+    sf.blit(mess,mr)
+    
+def main(d):
+    print(d)
+    abc=True
+    press1=0
+    ab=[1,1,1,1]
+    for i in range(d+1):
+        ab[i]=dice(  (i+1)*100 ,100  )
+        
+    while True:
+        
+       
+        
+        for event in pygame.event.get():
+                abc=True
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == KEYDOWN:
+                    if event.key == K_LEFT:
+                        return -18
+                    elif event.key == K_UP:
+                        
+                        if d<3:
+                            d+=1
+                    elif event.key == K_DOWN:
+                        
+                        if d>0:
+                            d-=1
+                    else:
+                        
+                        for i in range(d+1):
+                            ab[i].roll()
+                            
+                else:
+                    
+                     abc=False
+                     
+
+                    
+        
+        sum1=0
+        for i in range(d+1):
+            sum1+=ab[i].number
+        ert("total dices:"+str(d+1)+"    total:"+str(sum1),(100,400))
+        if abc:        
+            pygame.display.update()
+            fc.tick(10)
+        sf.fill(white)               
+                
+           
+        
+        
+        
+        
+def I():
+    pygame.quit()
+    sys.exit()
+d=3
+
+
+while d>-9:
+    d=main(d)
+I()
+    
+    
+    
+
+
+
+     
