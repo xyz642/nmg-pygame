@@ -1,0 +1,70 @@
+import sys
+from math import sin,cos,tan,radians
+import pygame
+from pygame.locals import QUIT,KEYDOWN,K_LEFT,K_RIGHT,K_UP,K_DOWN,Rect
+import random
+length=
+pygame.init()
+sf=pygame.display.set_mode((600,600))
+fc=pygame.time.Clock()
+white=(255,255,255)
+a=(64,64,64)
+green=(0,255,255)
+foods=[]
+snake=[]
+(W,H)=(20,20)
+
+def paint():
+    sf.fill(white)
+    for body in snake:
+        #리스트 에 있는 모든 튜플을 받아서 거기에 맞게 사각형을 그려 준다.
+        pygame.draw.rect(sf,green,Rect(body[0]*30,body[1]*30,30,30))
+    for index in range(20):
+        #줄을 차례대로 배열해준다.
+        pygame.draw.line(sf,a,(index*30,0),(index*30,600))
+        pygame.draw.line(sf,a,(0,index*30),(600,index*30))
+    pygame.display.update()
+        
+
+def main():
+    key=K_DOWN
+    gov=False
+    #시작지점의 위치를 정한다.
+    snake.append((int(W/2),int(H/2)))
+    while True:
+        for event in pygame.event.get():
+                
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == KEYDOWN:
+                    #key는 현재 나아가는 방향을 나타낸다.
+                    key=event.key
+        if not gov:
+            #방향에 따라 head의 위치(튜플)을 지정해준다. +1,-1 이 위치에 변화를 주는 요인이다.
+            if key == K_LEFT:
+                head = (snake[0][0]-1,snake[0][1])
+            if key == K_RIGHT:
+                head = (snake[0][0]+1,snake[0][1])
+            if key == K_UP:
+                head = (snake[0][0],snake[0][1]-1)
+            if key == K_DOWN:
+                head = (snake[0][0],snake[0][1]+1)
+        snake.insert(0,head)
+        snake.pop()
+        paint()
+        fc.tick(5)
+
+def I():
+    pygame.quit()
+    sys.exit()
+
+main()
+
+    
+    
+    
+
+
+
+     
