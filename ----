@@ -1,0 +1,55 @@
+import sys
+from math import sin,cos,tan,radians
+import pygame
+from pygame.locals import QUIT,Rect,KEYDOWN,K_LEFT,K_RIGHT,K_UP,K_DOWN
+import random
+red=(255,0,0)
+white=(255,255,255)
+pygame.init()
+pygame.key.set_repeat(5,5)
+sf=pygame.display.set_mode((1800,1000))
+fc=pygame.time.Clock()
+
+def move(a,b):
+    
+    c=a+b
+    d=1780
+    if c<0:
+        c=0
+    if c>d:
+        c=d
+    return c
+
+def main():
+    
+    pos=0
+    a=0    
+    while True:
+        
+        a+=1
+        a%=256
+        
+        for event in pygame.event.get():
+                
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                
+                    
+        pygame.draw.rect(sf,(0,255,255),(pos,900,20,20))
+        
+        d=pygame.key.get_pressed()
+        if d[K_LEFT]:
+            pos=move(pos,-5)
+        if d[K_RIGHT]:
+            pos=move(pos,5)
+        
+        pygame.display.update()
+        fc.tick(20000000)
+        sf.fill(white)               
+def I():
+    pygame.quit()
+    sys.exit()
+
+main()
+
