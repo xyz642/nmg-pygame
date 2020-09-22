@@ -1,7 +1,7 @@
 import sys
 from math import sin,cos,tan,radians
 import pygame
-from pygame.locals import QUIT,Rect,KEYDOWN,K_LEFT,K_RIGHT,K_UP,K_DOWN
+from pygame.locals import QUIT,Rect,KEYDOWN,K_LEFT,K_RIGHT,K_UP,K_DOWN,KEYUP
 import random
 red=(255,0,0)
 white=(255,255,255)
@@ -9,40 +9,86 @@ pygame.init()
 pygame.key.set_repeat(5,5)
 sf=pygame.display.set_mode((1800,1000))
 fc=pygame.time.Clock()
-
-def move(a,b):
-    
+sysfont = pygame.font.SysFont("Consolas",72)
+        
+class stick():
+    def __init__():
+        self.length=random.randint(50,1000)
+        self.xpos=random.randint(0,1800-self.length)
+        self.ypos=0
+        self.speed=(self.length+200)/100
+        self.hide=False
+        self.hs=0
+        if random.randint(1,6)==6:
+            self.hide=True
+            self.hs=4-(self.length)/200
+            #hs 수정 
+    def movedown():
+        pygame.draw.rect(sf,red,(self.xpos , self.ypos , length , 30 ))
+        self.ypos+=self.speed
+        #숨기기 기능 추가
+        
+def move(a,b,e):
+    if e>0:
+        return a
     c=a+b
     d=1780
     if c<0:
         c=0
     if c>d:
         c=d
-    return c
-
-def main():
     
+    return c
+def gameprint(a):
+    if a==1:
+        b="Paused"
+    elif a==2:
+        b="Press up key to play"
+    elif a==3:
+        b="Game Over"
+    else:
+        b=""
+    mess = sysfont.render(b,True,(0,128,128))
+    mess_rect = mess.get_rect()
+    mess_rect.center = (900,500)
+    sf.blit(mess,mess_rect)
+    
+def main():
+    paused=2
     pos=0
-    a=0    
+    a=0
+    
     while True:
         
         a+=1
         a%=256
-        
+        pygame.draw.rect(sf,(0,255,255),(pos,900,20,20))
         for event in pygame.event.get():
                 
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-                
+                elif event.type == KEYUP:
+                    if event.key == K_UP:
+                        if paused==0:
+                            paused=1
+                        elif paused==1 or paused==2:
+                            paused=0
                     
-        pygame.draw.rect(sf,(0,255,255),(pos,900,20,20))
-        
+                            
+                    
+        #막대의 움직임 구현
+        #게임오버 기능 만들기
+        if paused>0:
+            gameprint(paused)
         d=pygame.key.get_pressed()
         if d[K_LEFT]:
-            pos=move(pos,-5)
+            pos=move(pos,-5,paused)
         if d[K_RIGHT]:
-            pos=move(pos,5)
+            pos=move(pos,5,paused)
+        
+        
+        
         
         pygame.display.update()
         fc.tick(20000000)
