@@ -1,3 +1,4 @@
+
 import sys
 from math import sin,cos,tan,radians
 import pygame
@@ -11,22 +12,29 @@ sf=pygame.display.set_mode((1800,1000))
 fc=pygame.time.Clock()
 sysfont = pygame.font.SysFont("Consolas",72)
         
-class stick():
-    def __init__():
-        self.length=random.randint(50,1000)
+class stick:
+    def __init__(self):
+        self.d=0
+        self.length=random.randint(100,900)
         self.xpos=random.randint(0,1800-self.length)
         self.ypos=0
-        self.speed=(self.length+200)/100
+        self.speed=(1100-self.length)/200
         self.hide=False
         self.hs=0
-        if random.randint(1,6)==6:
+        if random.randint(6,6)==6:
             self.hide=True
-            self.hs=4-(self.length)/200
+            self.hs=500/255
             #hs 수정 
-    def movedown():
-        pygame.draw.rect(sf,red,(self.xpos , self.ypos , length , 30 ))
+    def movedown(self):
         self.ypos+=self.speed
-        #숨기기 기능 추가
+        if self.hide:
+            if self.d<=255:
+                self.d+=self.hs
+            if self.d>255:
+                self.d=255
+            
+    def show(self):
+          pygame.draw.rect(sf,(255,self.d,self.d),(self.xpos , self.ypos , self.length , 30 ))  
         
 def move(a,b,e):
     if e>0:
@@ -56,13 +64,22 @@ def gameprint(a):
 def main():
     paused=2
     pos=0
-    a=0
-    
+    time=0
+    s=[]
     while True:
         
-        a+=1
-        a%=256
+        time+=1
         pygame.draw.rect(sf,(0,255,255),(pos,900,20,20))
+        count=0
+        for i1 in s:
+             i1.movedown()
+             i1.show()
+             if i1.ypos>1500:
+                 s.pop(count)
+             count+=1
+        if time%100==0:
+            if time%1000:
+                s.append(stick())
         for event in pygame.event.get():
                 
                 if event.type == QUIT:
@@ -77,8 +94,7 @@ def main():
                     
                             
                     
-        #막대의 움직임 구현
-        #게임오버 기능 만들기
+                #게임오버 기능 만들기
         if paused>0:
             gameprint(paused)
         d=pygame.key.get_pressed()
