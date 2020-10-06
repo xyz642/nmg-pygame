@@ -51,7 +51,7 @@ def move(a,b,f):
 def detect(a,b,c,d):
     e=((c<a) and (a<d)) or ((c<b) and (b<d))
     f=int(e)
-    return f
+    return ｆ
     
 def gameprint(a):
     if a==1:
@@ -66,14 +66,23 @@ def gameprint(a):
     mess_rect = mess.get_rect()
     mess_rect.center = (900,500)
     sf.blit(mess,mess_rect)
+def scoreprint(a):
+    
+    mess1 = sysfont.render("score:"+str(a),True,(0,128,128))
+    mess_rect1 = mess1.get_rect()
+    mess_rect1.center = (900,100)
+    sf.blit(mess1,mess_rect1)
     
 def main():
     paused=2
-    pos=0
+    pos=900
     time=0
     s=[]
+    score=0
+    a7=100
+    
     while True:
-        
+        scoreprint(score)
         time+=1
         pygame.draw.rect(sf,(0,255,255),(pos,900,20,20))
         count=0
@@ -83,11 +92,12 @@ def main():
              if i1.ypos>1700:
                  s.pop(count)
              count+=1
-        if time%100==0:
-            if time%1000:
-                if paused == 0:
-                    
-                    s.append(stick())
+        
+        if time%a7==0 and paused == 0:
+            score+=1
+            s.append(stick())
+            if score%50==0:
+                a7-=50
         for event in pygame.event.get():
                 
                 if event.type == QUIT:
@@ -118,21 +128,20 @@ def main():
         if d[K_RIGHT]:
             pos=move(pos,5,paused)
         
-            
+        
         
         
         
         
         pygame.display.update()
-        fc.tick(20000000)
+        fc.tick(200000)
         sf.fill(white)               
 def I():
     pygame.quit()
     sys.exit()
 
 main()
-#기록 나오게 하기
-#점점 더 빨라지게 하기
-#점점 막대의 출연 빈도를 높이기 (그러나 최대치는 제한해 둘것 ;너무 많으면 렉걸림 )
-#가운데서 시작하게 하기
+
+
+
 
